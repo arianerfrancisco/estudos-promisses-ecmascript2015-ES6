@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promisses</title>
+</head>
+
+<body>
+    <script>
+        let promesssa = new Promise((resolve, reject) => {
+            // requisição HTTP para recuperar uma relação de usuarios
+            setTimeout(() => {
+
+                // considerando que a requisição foi resolvida de algum modo
+                let resposta_da_requisicao = {}
+
+                // erro da requisicao
+                if (false) { 
+                    // false para desencadear o then. Irá excluir o catch
+                    // true para desencadear o catch e seus thens seguintes, excluindo os thens anteriores
+                    resposta_da_requisicao = {
+                        codigo: 1050,
+                        erro: 'Falha de autorização'
+                    }
+                    reject(resposta_da_requisicao) // direciona para o catch, que possui mesmo comportamento que o then
+                }
+
+                resposta_da_requisicao = {
+                    0: { id: 1, nome: 'João' },
+                    1: { id: 2, nome: 'José' },
+                    2: { id: 3, nome: 'Maria' }
+                }
+
+                resolve(resposta_da_requisicao)
+              
+
+            }, 3000)
+
+        }).then(dados => { // recupera o parâmetro resolvido. // nos thens pode haver outras promisses
+            console.log('Operacao sequencial', dados)
+            return 'Parametro 1 para o then 2' // pode enviar paramentros para o proximo then encadeado
+        }).then(param => { // varios then podem ser encadeados
+            console.log('Then número 2', param)
+        }).catch(erro=>{ // recupera o parametro reject, ele pode desencadear seus proprios thens
+            console.log('Operação sequencial (Catch): ', erro)
+            return 'Parametro capturado no catch e enviado ao then 3'
+        }).then(param => {
+            console.log('Then número 3', param)
+        }).then(() => {
+            console.log('Then número 4')
+        })
+
+    </script>
+
+</body>
+
+</html>
